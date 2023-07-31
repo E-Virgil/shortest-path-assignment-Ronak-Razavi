@@ -5,6 +5,7 @@
 // Define the maximum number of cities and maximum length of city names
 #define MAX_CITIES 100
 #define MAX_CITY_NAME_LENGTH 50
+#define INT_MAX 9999
 
 // struct to represent an edge, connecting to cities in the graph (edge), for adjacency list
 typedef struct Edge{
@@ -108,6 +109,84 @@ City* createAdjancencyList(const char* cityListFilePath, const char* cityDistFil
 }
 
 
+void dijkstra(City* cities, int numCities, int startCity, int endCity){
+    int *distances = (int*)malloc(numCities * sizeof(int));
+    int *previous = (int*)malloc(numCities * sizeof(int));
+    int *visited = (int*)calloc(numCities, sizeof(int)); // initializes all elements to 0
+
+    for(int i = 0; i < numCities; i++){
+        distances[i] = INT_MAX;
+        previous[i] = -1;
+    }
+
+    // The distance from the start city to itself is 0
+    distances[startCity] = 0;
+
+    /*
+     * main logic of the algo.
+     * for each city, select unvisited neighbor with smallest known distance from start city
+     * if all remaining cities have distance of MAX_INT, then break loop
+     */
+
+    for(int i = 0; i < numCities; i++){
+        // find the city with the smallest distance
+        int cityIndex = -1;
+        for(int j = 0; j < numCities; j++){
+            if(visited[j])
+                continue;
+            if(cityIndex == -1 || distances[j] < distances[cityIndex])
+                cityIndex = j;
+        }
+
+        if(distances[cityIndex] == INT_MAX)
+            break;
+
+        // mark the city as visited
+        visited[cityIndex] = 1;
+
+        // update the distances of its neighbors
+        Edge* edge = cities[cityIndex].edges;
+        while(edge != NULL){
+            int altDistance = distances[cityIndex] + edge->distance;
+            if(altDistance < distances[edge->destination]){
+                distances[edge->destination] = altDistance;
+                previous[edge->destination] = cityIndex;
+            }
+            edge = edge->next;
+        }
+    }
+    // Print the shortest path and its cost
+    int path[MAX_CITIES];
+    int pathSize = 0;
+
+    // Build the path backwards
+    for(int at = endCity; at != -1; at = previous[at]){
+        path[pathSize++] = at;
+    }
+
+    // Reverse the path to get it in the correct order
+    for(int i = 0; i < pathSize / 2; i++){
+        int temp = path[i];
+        path[i] = path[pathSize - i - 1];
+        path[pathSize - i - 1] = temp;
+    }
+
+    // Print the path
+    printf("Shortest path:\n");
+    for(int i = 0; i < pathSize; i++){
+        printf("%s\n", cities[path[i]].name);
+    }
+
+    // Print the total cost
+    printf("Total cost: %d\n", distances[endCity]);
+
+
+    free(distances);
+    free(previous);
+    free(visited);
+
+}
+
 // main
 int main() {
     int numCities = 0;
@@ -116,14 +195,27 @@ int main() {
         printf("Failed to create adjacency list.\n");
         return 1;
     }
+
+    //displays cities
+    printf("Cities:\n");
     for(int i=0; i<numCities; i++){
-        printf("City: %s\n", cities[i].name);
-        Edge* currentEdge = cities[i].edges;
-        while(currentEdge){
-            printf("\tConnects to: %s, Distance: %d\n", cities[currentEdge->destination].name, currentEdge->distance);
-            currentEdge = currentEdge->next;
-        }
+        printf("%d: %s\n", i+1, cities[i].name);
     }
+
+    // Ask the user to pick two cities
+    int cityIndex1, cityIndex2;
+    printf("Enter the number of the first city: ");
+    scanf("%d", &cityIndex1);
+    printf("Enter the number of the second city: ");
+    scanf("%d", &cityIndex2);
+    // Validate user input
+    if(cityIndex1 < 1 || cityIndex1 > numCities || cityIndex2 < 1 || cityIndex2 > numCities){
+        printf("Invalid city number(s). Please enter a number between 1 and %d.\n", numCities);
+        // You could put this validation inside a loop to keep asking for input until valid
+    }
+
+    dijkstra(cities, numCities, cityIndex1-1, cityIndex2-1);
+
 
     // Free memory
     for (int i = 0; i < numCities; i++) {
