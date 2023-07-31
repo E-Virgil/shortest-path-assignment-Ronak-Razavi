@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "shortest_path_assignment_Ronak_Razavi",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "shortest_path_assignment_Ronak_Razavi::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-shortest_path_assignment_Ronak_Razavi-Debug-73880390fd729bd22bb7.json",
+					"name" : "shortest_path_assignment_Ronak_Razavi",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/ethanvirgil/Documents/GitHub/shortest-path-assignment-Ronak-Razavi/cmake-build-debug",
+		"source" : "/Users/ethanvirgil/Documents/GitHub/shortest-path-assignment-Ronak-Razavi"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
