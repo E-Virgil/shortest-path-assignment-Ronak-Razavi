@@ -211,7 +211,6 @@ int main() {
     // Validate user input
     if(cityIndex1 < 1 || cityIndex1 > numCities || cityIndex2 < 1 || cityIndex2 > numCities){
         printf("Invalid city number(s). Please enter a number between 1 and %d.\n", numCities);
-        // You could put this validation inside a loop to keep asking for input until valid
     }
 
     dijkstra(cities, numCities, cityIndex1-1, cityIndex2-1);
